@@ -1,0 +1,61 @@
+server:
+  port: 8001
+  
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  druid:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://127.0.0.1:3306/db_house?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/db_sso?serverTimezone=GMT%2B8&characterEncoding=utf8
+    username: root
+    password: root
+    maxActive: 30  #最大连接数
+    minIdle: 5  #最小连接数
+    maxWait: 10000   #获取连接的最大等候时间
+    test-on-borrow: false
+    test-on-return: false
+    test-while-idle: true
+    validation-query: SELECT 'x'
+    time-between-eviction-runs-millis: 60000  #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    min-evictable-idle-time-millis: 30000  #配置一个连接在池中最小生存的时间，单位是毫秒
+
+    # Redis数据源
+  redis:
+    host: 192.168.223.130
+    port: 6379
+    timeout: 6000
+    password:
+    jedis:
+      pool:
+        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+
+
+
+# Mybatis-Plus
+mybatis-plus:
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapper-locations:
+  - classpath:mapper/*.xml
+  #实体扫描
+  type-aliases-package: priv.linyu.sso.core.pojo
+  global-config:
+    db-config:
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+      #主键类型  NONE:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID", AUTO: MP自动决定;
+      id-type: AUTO
+      #数据库大写下划线转换
+      capital-mode: true
+      #字段更新插入策略  0:"忽略判断",not_null:"非 NULL 判断"),2:"非空判断"
+      field-strategy: not_null
+      db-type: mysql
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    # 打印sql日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
